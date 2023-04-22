@@ -1,0 +1,10 @@
+version: '3'
+services:
+  mockapi:
+    build:
+      context: ./swagger-codegen-server
+      dockerfile: Dockerfile
+    image: mockapi
+    container_name: mockapi
+    ports:
+      - "8080:8080"
