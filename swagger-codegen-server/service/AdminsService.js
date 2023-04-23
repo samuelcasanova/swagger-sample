@@ -5,9 +5,10 @@
  * deletes an existing task
  * Deletes an existing task
  *
+ * taskId String Task id to delete
  * no response value expected for this operation
  **/
-exports.deleteTask = function() {
+exports.deleteTask = function(taskId) {
   return new Promise(function(resolve, reject) {
     resolve();
   });

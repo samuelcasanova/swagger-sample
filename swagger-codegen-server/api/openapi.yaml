@@ -9,11 +9,10 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0
 servers:
-  - description: Localhost Mock
-    url: http://localhost:8080
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/SAMUELCASANOVAORG/taskmanager/1.0.0
+- url: http://localhost:8080
+  description: Localhost Mock
+- url: https://virtserver.swaggerhub.com/SAMUELCASANOVAORG/taskmanager/1.0.0
+  description: SwaggerHub API Auto Mocking
 tags:
 - name: admins
   description: Secured Admin-only calls
@@ -81,12 +80,22 @@ paths:
         "400":
           description: invalid request
       x-swagger-router-controller: Admins
+  /tasks/{taskId}:
     delete:
       tags:
       - admins
       summary: deletes an existing task
       description: Deletes an existing task
       operationId: deleteTask
+      parameters:
+      - name: taskId
+        in: path
+        description: Task id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       responses:
         "200":
           description: task deleted

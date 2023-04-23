@@ -3,8 +3,8 @@
 var utils = require('../utils/writer.js');
 var Admins = require('../service/AdminsService');
 
-module.exports.deleteTask = function deleteTask (req, res, next) {
-  Admins.deleteTask()
+module.exports.deleteTask = function deleteTask (req, res, next, taskId) {
+  Admins.deleteTask(taskId)
     .then(function (response) {
       utils.writeJson(res, response);
     })
