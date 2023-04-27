@@ -1,0 +1,135 @@
+openapi: 3.0.0
+info:
+  title: Simple Task Manager
+  description: Task Manager
+  contact:
+    email: scrtestingpurposes@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Localhost Mock
+- url: https://virtserver.swaggerhub.com/SAMUELCASANOVAORG/taskmanager/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: http://localhost:3000/v1
+  description: Localhost Real
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: users
+  description: Operations available to regular users
+paths:
+  /tasks:
+    get:
+      tags:
+      - users
+      summary: get tasks
+      description: |
+        Gets all tasks
+      operationId: getTasks
+      x-eov-operation-handler: routes/tasks.routes
+      parameters:
+      - name: skip
+        in: query
+        description: number of records to skip for pagination
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: maximum number of records to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 50
+          minimum: 0
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: tasks results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+                x-content-type: application/json
+        "400":
+          description: bad input parameter
+      x-swagger-router-controller: Users
+    post:
+      tags:
+      - admins
+      summary: adds a new task
+      description: Adds a new task
+      operationId: postTask
+      x-eov-operation-handler: routes/tasks.routes
+      requestBody:
+        description: Task to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        "201":
+          description: task created successfully
+        "400":
+          description: invalid request
+      x-swagger-router-controller: Admins
+  /tasks/{taskId}:
+    delete:
+      tags:
+      - admins
+      summary: deletes an existing task
+      description: Deletes an existing task
+      operationId: deleteTask
+      x-eov-operation-handler: routes/tasks.routes
+      parameters:
+      - name: taskId
+        in: path
+        description: Task id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: task deleted
+        "404":
+          description: task not found
+      x-swagger-router-controller: Admins
+components:
+  schemas:
+    Task:
+      required:
+      - createdDate
+      - description
+      - dueDate
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 748e7d67-620b-4a2f-b7e6-c5a4c2e60758
+        description:
+          type: string
+          example: Laundry
+        createdDate:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        dueDate:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+
