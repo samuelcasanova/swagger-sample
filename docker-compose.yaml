@@ -8,3 +8,11 @@ services:
     container_name: mockapi
     ports:
       - "8080:8080"
+  realdesignfirstapi:
+    build:
+      context: ./swagger-design-first-real-server
+      dockerfile: Dockerfile
+    image: realdesignfirstapi
+    container_name: realdesignfirstapi
+    ports:
+      - "3000:3000"
