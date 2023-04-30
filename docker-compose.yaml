@@ -16,3 +16,11 @@ services:
     container_name: realdesignfirstapi
     ports:
       - "3000:3000"
+  realcodefirstapi:
+    build:
+      context: ./swagger-code-first-real-server
+      dockerfile: Dockerfile
+    image: realcodefirstapi
+    container_name: realcodefirstapi
+    ports:
+      - "3001:3001"
