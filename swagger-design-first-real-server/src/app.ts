@@ -2,6 +2,7 @@ import path from 'path'
 import express, { type NextFunction, type Request, type Response } from 'express'
 import { middleware } from 'express-openapi-validator'
 import morgan from 'morgan'
+import { type ValidationError } from 'express-openapi-validator/dist/framework/types'
 
 const app = express()
 
@@ -19,8 +20,8 @@ app.use(
   })
 )
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
-  res.status(500).json({
+app.use((err: ValidationError, req: Request, res: Response, _next: NextFunction): void => {
+  res.status(err.status ?? 500).json({
     error: err
   })
 })
