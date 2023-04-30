@@ -83,7 +83,7 @@ taskRouter.post('/', (req: Request, res: Response) => {
 
 /**
  * @swagger
- *   /tasks:
+ *   /tasks/{taskId}:
  *      delete:
  *            tags:
  *            - admins
