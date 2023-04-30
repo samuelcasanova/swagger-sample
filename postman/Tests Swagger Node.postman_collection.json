@@ -1,0 +1,255 @@
+{
+	"info": {
+		"_postman_id": "bc44eb3e-8b3e-9f0d-0ac7-cf95a5b75336",
+		"name": "Tests Swagger Node",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2529367"
+	},
+	"item": [
+		{
+			"name": "GET tasks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"pm.environment.set(\"initialNumberOfTasks\", jsonData.length)\r",
+							"\r",
+							"pm.test(\"Test data type of the response\", () => {\r",
+							"  pm.expect(jsonData).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Test data type of the first task\", () => {\r",
+							"  pm.expect(jsonData[0].id).to.be.a(\"string\");\r",
+							"  pm.expect(jsonData[0].description).to.be.a(\"string\");\r",
+							"  pm.expect(jsonData[0].createdDate).to.be.a(\"string\");\r",
+							"  pm.expect(jsonData[0].dueDate).to.be.a(\"string\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}:{{port}}/v1/tasks",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"v1",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"id\": \"43e661dd-e924-43d8-957a-2f0592691b42\", \r\n    \"description\": \"Test\", \r\n    \"createdDate\": \"2016-08-29T09:12:33.001Z\", \r\n    \"dueDate\": \"2017-08-29T09:12:33.001Z\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}:{{port}}/v1/tasks",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"v1",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST incorrect task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"taskId\": \"43e661dd-e924-43d8-957a-2f0592691b42\", \r\n    \"description\": \"Test\", \r\n    \"createdDate\": \"2016-08-29T09:12:33.001Z\", \r\n    \"dueDate\": \"2017-08-29T09:12:33.001Z\",\r\n    \"something\": \"invented\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}:{{port}}/v1/tasks",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"v1",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET tasks + 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Num tasks has increased\", () => {\r",
+							"  pm.expect(jsonData.length).to.eql(pm.environment.get(\"initialNumberOfTasks\") + 1);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}:{{port}}/v1/tasks",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"v1",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE first task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}:{{port}}/v1/tasks/{{taskIdToDelete}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"v1",
+						"tasks",
+						"{{taskIdToDelete}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET tasks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Number of tasks is the initial one\", () => {\r",
+							"  pm.expect(jsonData.length).to.eql(pm.environment.get(\"initialNumberOfTasks\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Deleted task is not in the response\", () => {\r",
+							"  pm.expect(jsonData.some(t => t.id === pm.environment.get(\"taskIdToDelete\"))).to.be.false;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}:{{port}}/v1/tasks",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"v1",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
